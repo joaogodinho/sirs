@@ -1,0 +1,15 @@
+{% load staticfiles %}
+<head>
+	<title>Download File</title>
+	<script type="text/javascript" src="{% static 'js/jquery-2.1.4.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/forge.bundle.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/sirs.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/common.js' %}"></script>
+</head>
+<body>
+	<form id="frmDownload">
+		{{ form.as_p }}
+		<input type="button" id="btnDecipher" value="Decipher">
+		<input type="button" value="Download" id="btnDownload">
+	</form>
+</body>

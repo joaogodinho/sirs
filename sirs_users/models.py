@@ -6,8 +6,8 @@ class SecretFile(models.Model):
     """SecretFile class represents a ciphered file.
     Contains the file key, ciphered file and its owner.
     """
-    # Filename, must not exceed 256 chars.
-    name = models.CharField(max_length=256)
+    # Filename, must not exceed 256 chars. Considered primary key
+    name = models.CharField(max_length=256, primary_key=True)
 
     # IV is 128bit long, base64 encoded, which gives a maximum
     # length of aprox. 22 chars. Rounded up for safety.
@@ -26,6 +26,9 @@ class SecretFile(models.Model):
 
     # File owner reference, ignoring file sharing for now.
     owner = models.ForeignKey('CustomUser')
+
+    def __unicode__(self):
+        return self.name + " (" + str(self.owner) + ")"
 
 
 class CustomUser(models.Model):
