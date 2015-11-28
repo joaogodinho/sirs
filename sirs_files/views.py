@@ -11,10 +11,10 @@ def upload(request):
     Takes an authenticated user and saves
     the given file
     """
+    owner = get_object_or_404(CustomUser, user=request.user)
     if request.method == 'POST':
         form = FileUpload(request.POST)
         if form.is_valid():
-            owner = get_object_or_404(CustomUser, user=request.user)
             file = form.save(commit=False)
             file.owner = owner
             file.save()
@@ -23,7 +23,7 @@ def upload(request):
             return render(request, 'sirs_files/upload.html',
                           {'form': form})
     else:
-        form = FileUpload()
+        form = FileUpload(initial={'pubKey': owner.publicKey})
         return render(request, 'sirs_files/upload.html',
                       {'form': form})
 

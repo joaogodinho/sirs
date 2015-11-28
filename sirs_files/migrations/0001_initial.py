@@ -16,7 +16,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('name', models.CharField(max_length=256, serialize=False, primary_key=True)),
                 ('iv', models.CharField(max_length=30)),
-                ('key', models.CharField(max_length=50)),
+                ('key', models.CharField(max_length=350)),
                 ('ct', models.TextField()),
                 ('owner', models.ForeignKey(to='sirs_users.CustomUser')),
             ],

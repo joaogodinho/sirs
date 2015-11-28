@@ -13,22 +13,22 @@
     // Generates a random key with size = KEY_SIZE
     var generateKey = function() {
         return forge.random.getBytesSync(KEY_SIZE);
-    }
+    };
 
     // Generates a random IV with size = IV_SIZE
     var generateIV = function() {
         return forge.random.getBytesSync(IV_SIZE);
-    }
+    };
 
     // Converts the given bytes to base64
     var encode = function(bytes) {
         return forge.util.encode64(bytes);
-    }
+    };
 
     // Converths the given base64 string into bytes
     var decode = function(str) {
         return forge.util.decode64(str);
-    }
+    };
 
     // Ciphers the given content using a random key and IV and
     // returns an object with fields key, iv and ct, all base64 encoded
@@ -99,7 +99,7 @@
         } else {
             throw "Download filename and content cannot be null."
         }
-    }
+    };
 
     // Asynchronosly generates a key pair, on every step calls
     // step_func, when done calls done_func and passes the keys as
@@ -113,19 +113,70 @@
                 setTimeout(step,1);
                 step_func();
             } else {
-                done_func(state.keys);
+                var publicPem = publicKeyToPem(state.keys.publicKey);
+                var privatePem = privateKeyToPem(state.keys.privateKey);
+                done_func(publicPem, privatePem);
             }
-        }
+        };
         setTimeout(step);
-    }
+    };
 
-    sirs.publicKeyToPem = function(key) {
+    // Converts a public key object to PEM format
+    var publicKeyToPem = function(key) {
         return forge.pki.publicKeyToPem(key);
+    };
+
+    // Converts a PEM public key to an object
+    var publicKeyFromPem = function(pem) {
+        return forge.pki.publicKeyFromPem(pem);
+    };
+
+    // Converts a private key object to PEM format
+    var privateKeyToPem = function(key) {
+        return forge.pki.privateKeyToPem(key);
+    };
+
+    // Converts a PEM private key to an object
+    var privateKeyFromPem = function(pem) {
+        return forge.pki.privateKeyFromPem(pem);
+    };
+
+    // Takes public key object and key object and
+    // ciphers {key}pubKey
+    sirs.cipherKey = function(pubKey, key) {
+        pubKey = publicKeyFromPem(pubKey);
+        key = decode(key);
+        var result = encode(pubKey.encrypt(key));
+        return result;
+    };
+
+    sirs.decipherKey = function(privKey, ct) {
+        privKey = privateKeyFromPem(privKey);
+        ct = decode(ct);
+        var result = encode(privKey.decrypt(ct));
+        return result;
     }
 
-    sirs.privateKeyToPem = function(key) {
-        return forge.pki.privateKeyToPem(key);
-    }
+    // Takes a file object and a success function,
+    // reads the file and calls success function with
+    // filename and content as params
+    sirs.readFile = function(file, succ_func) {
+        if (file) {
+            var filename = file.name;
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                var content = e.target.result;
+                if (content) {
+                    succ_func(filename, content);
+                } else {
+                    throw "Coudln't get file content.";
+                }
+            };
+            reader.readAsBinaryString(file);
+        } else {
+            throw "Couldn't get file."
+        }
+    };
 
     return sirs;
 });

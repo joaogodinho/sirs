@@ -16,7 +16,7 @@ class Migration(migrations.Migration):
             name='CustomUser',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('publicKey', models.CharField(default=b'', max_length=256)),
+                ('publicKey', models.TextField()),
                 ('user', models.OneToOneField(to=settings.AUTH_USER_MODEL)),
             ],
         ),

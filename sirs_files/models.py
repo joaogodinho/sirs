@@ -12,11 +12,8 @@ class SecretFile(models.Model):
     # length of aprox. 22 chars. Rounded up for safety.
     iv = models.CharField(max_length=30)
 
-    # Key is 256bit long, base64 encoded, which gives a maximum
-    # length of aprox. 43 chars. Rounded up for safety.
-    # For testing only, final version should not save
-    # the key (key will be ciphered)
-    key = models.CharField(max_length=50)
+    # Key represents {Key}PubKey, is base64 encoded
+    key = models.CharField(max_length=350)
 
     # Ciphertext field, base64 encoded, size varies.
     # For testing only, final version should not save

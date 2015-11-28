@@ -1,37 +1,36 @@
+"use strict";
+
 $(function() {
     $("#btnCipher").click(function() {
-        // Get the file content
-        file = $("#id_file")[0].files[0];
-        if (file) {
-            filename = file.name;
+        var file = $("#id_file")[0].files[0];
+        var publicPem = $("#id_pubKey").val();
+
+        sirs.readFile(file, function(filename, content) {
+            var result = sirs.cipher(content);
+            var cipheredKey = sirs.cipherKey(publicPem, result.key);
+
             $("#id_name").val(filename);
-            
-            var reader = new FileReader();
-            reader.onload = function(e) {
-                var content = e.target.result;
-                if (content) {
-                    var result = sirs.cipher(content);
-                    $("#id_iv").val(result.iv);
-                    $("#id_key").val(result.key);
-                    $("#id_ct").val(result.ct);
-                } else {
-                    throw "Couldn't get file content.";
-                }
-            }
-            reader.readAsBinaryString(file);
-        } else {
-            throw "Couldn't get file."
-        }
+            $("#id_iv").val(result.iv);
+            $("#id_ct").val(result.ct);
+            $("#id_key").val(cipheredKey);
+        });
     });
 
     $("#btnDownload").click(function() {
         var obj = {};
-        obj.filename = $("#id_name").val();
-        obj.iv = $("#id_iv").val();
-        obj.key = $("#id_key").val();
-        obj.ct = $("#id_ct").val();
-        var result = sirs.decipher(obj);
-        sirs.download(obj.filename, result);
+        var keyCT = $("#id_key").val();
+        var privatePem = $("#id_privKey")[0].files[0];
+
+        sirs.readFile(privatePem, function(_, content) {
+            var decipheredKey = sirs.decipherKey(content, keyCT);
+            $("#id_key").val(decipheredKey);
+            obj.filename = $("#id_name").val();
+            obj.iv = $("#id_iv").val();
+            obj.key = decipheredKey;
+            obj.ct = $("#id_ct").val();
+            var result = sirs.decipher(obj);
+            sirs.download(obj.filename, result);
+        });
     });
 
     $("#btnDecipher").click(function() {
@@ -46,13 +45,11 @@ $(function() {
         sirs.generateKeyPair(function() {
             text += ".";
             $("#parInfo").text(text);
-        }, function(keys) {
-            var publicKey = sirs.publicKeyToPem(keys.publicKey);
-            var privateKey = sirs.privateKeyToPem(keys.privateKey);
+        }, function(publicPem, privatePem) {
             $("#parInfo").text("Done!");
-            $("#id_publicKey").val(publicKey);
-            sirs.download("public.pem", publicKey);
-            sirs.download("private.pem", privateKey);
+            $("#id_publicKey").val(publicPem);
+            sirs.download("public.pem", publicPem);
+            sirs.download("private.pem", privatePem);
             $("#btnGenerate").prop('disabled', true);
             $("#btnRegister").prop('disabled', false);
         });
