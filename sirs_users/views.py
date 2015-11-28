@@ -11,6 +11,8 @@ def register(request):
     """
     if request.user.is_authenticated():
         return redirect('sirs_main:home')
+    userForm = UserCreationForm()
+    userCustomForm = UserCustomCreationForm()
     if request.method == 'POST':
         userForm = UserCreationForm(request.POST)
         userCustomForm = UserCustomCreationForm(request.POST)
@@ -21,10 +23,9 @@ def register(request):
                 userCustom.user = user
                 userCustom.save()
             return redirect('sirs_main:home')
-    else:
-        return render(request, 'sirs_users/register.html',
-                      {'register_form': UserCreationForm(),
-                       'register_customform': UserCustomCreationForm()})
+    return render(request, 'sirs_users/register.html',
+                  {'register_form': userForm,
+                   'register_customform': userCustomForm})
 
 
 def login(request):
