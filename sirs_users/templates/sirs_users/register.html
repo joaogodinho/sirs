@@ -1,10 +1,13 @@
 {% extends "sirs_main/base.html" %}
 {% block title %}Register{% endblock %}
 {% block content %}
-<form action="" method="post">
+<p>All fields are required. When you click register, an asymmetric key pair will be generated and prompt for download (securely save them), the public key will then be uploaded to the server.</p>
+<form action="" method="post" id="frmRegister">
 	{% csrf_token %}
 	{{ register_form.as_p }}
 	{{ register_customform.as_p }}
-	<input type="submit" value="Register">
+	<input type="button" value="Generate Keys" id="btnGenerate">
+	<input type="submit" value="Register" id="btnRegister">
 </form>
+<p id="parInfo"></p>
 {% endblock %}

@@ -6,6 +6,8 @@
     var IV_SIZE = 16;
     var KEY_SIZE = 32;
     var CIPHER = "AES-CBC";
+    var PAIR_SIZE = 2048;
+    var PAIR_EXP = 0x10001;
     var sirs = {};
 
     // Generates a random key with size = KEY_SIZE
@@ -97,6 +99,32 @@
         } else {
             throw "Download filename and content cannot be null."
         }
+    }
+
+    // Asynchronosly generates a key pair, on every step calls
+    // step_func, when done calls done_func and passes the keys as
+    // argument
+    sirs.generateKeyPair = function(step_func, done_func) {
+        var rsa = forge.pki.rsa;
+        var pki = forge.pki;
+        var state = rsa.createKeyPairGenerationState(PAIR_SIZE, PAIR_EXP);
+        var step = function() {
+            if(!rsa.stepKeyPairGenerationState(state, 100)) {
+                setTimeout(step,1);
+                step_func();
+            } else {
+                done_func(state.keys);
+            }
+        }
+        setTimeout(step);
+    }
+
+    sirs.publicKeyToPem = function(key) {
+        return forge.pki.publicKeyToPem(key);
+    }
+
+    sirs.privateKeyToPem = function(key) {
+        return forge.pki.privateKeyToPem(key);
     }
 
     return sirs;

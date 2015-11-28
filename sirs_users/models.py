@@ -10,7 +10,7 @@ class CustomUser(models.Model):
     user = models.OneToOneField(User)
 
     # User public key
-    publicKey = models.CharField(max_length=256, default="")
+    publicKey = models.TextField()
 
     # String representation of CustomUser shows
     # the username

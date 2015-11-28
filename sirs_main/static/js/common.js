@@ -37,4 +37,24 @@ $(function() {
     $("#btnDecipher").click(function() {
         $("#btnDownload").trigger('click');
     });
+
+    $("#btnRegister").prop('disabled', true);
+
+    $("#btnGenerate").click(function(event) {
+        var text = "Generating asymmetric keys...";
+        $("#parInfo").text(text);
+        sirs.generateKeyPair(function() {
+            text += ".";
+            $("#parInfo").text(text);
+        }, function(keys) {
+            var publicKey = sirs.publicKeyToPem(keys.publicKey);
+            var privateKey = sirs.privateKeyToPem(keys.privateKey);
+            $("#parInfo").text("Done!");
+            $("#id_publicKey").val(publicKey);
+            sirs.download("public.pem", publicKey);
+            sirs.download("private.pem", privateKey);
+            $("#btnGenerate").prop('disabled', true);
+            $("#btnRegister").prop('disabled', false);
+        });
+    });
 });

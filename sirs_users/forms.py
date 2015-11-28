@@ -1,4 +1,4 @@
-from django.forms import ModelForm, EmailField
+from django.forms import ModelForm, EmailField, HiddenInput
 from .models import CustomUser
 from django.contrib.auth.forms import UserCreationForm as DjgoUserCreationForm
 from django.contrib.auth.models import User
@@ -23,3 +23,6 @@ class UserCustomCreationForm(ModelForm):
     class Meta:
         model = CustomUser
         fields = ['publicKey']
+        widgets = {
+            'publicKey': HiddenInput(),
+        }
