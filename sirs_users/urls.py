@@ -3,6 +3,6 @@ from . import views
 
 
 urlpatterns = [
-    url(r'^upload/', views.upload, name='upload'),
-    url(r'^download/(?P<filename>.+)$', views.download, name='download')
+    url(r'^register/$', views.register, name='register'),
+    url(r'^login/$', views.login, name='login'),
 ]

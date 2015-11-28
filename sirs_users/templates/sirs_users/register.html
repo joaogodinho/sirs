@@ -1,0 +1,10 @@
+{% extends "sirs_main/base.html" %}
+{% block title %}Register{% endblock %}
+{% block content %}
+<form action="" method="post">
+	{% csrf_token %}
+	{{ register_form.as_p }}
+	{{ register_customform.as_p }}
+	<input type="submit" value="Register">
+</form>
+{% endblock %}

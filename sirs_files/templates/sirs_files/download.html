@@ -1,0 +1,9 @@
+{% extends "sirs_main/base.html" %}
+{% block title %}Download File{% endblock %}
+{% block content %}
+<form id="frmDownload">
+	{{ form.as_p }}
+	<input type="button" id="btnDecipher" value="Decipher">
+	<input type="button" value="Download" id="btnDownload">
+</form>
+{% endblock %}

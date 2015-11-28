@@ -1,16 +1,15 @@
 {% load staticfiles %}
+<!DOCTYPE html>
+<html>
 <head>
-	<title>Upload File</title>
+	<meta charset="utf-8">
 	<script type="text/javascript" src="{% static 'js/jquery-2.1.4.js' %}"></script>
 	<script type="text/javascript" src="{% static 'js/forge.bundle.js' %}"></script>
 	<script type="text/javascript" src="{% static 'js/sirs.js' %}"></script>
 	<script type="text/javascript" src="{% static 'js/common.js' %}"></script>
+	<title>SIRS - {% block title %}Base{% endblock %}</title>
 </head>
 <body>
-	<form action="{% url 'sirs_users:upload' %}" method="post" id="frmUpload">
-		{% csrf_token %}
-		{{ form.as_p }}
-		<input type="button" id="btnCipher" value="Cipher">
-		<input type="submit" value="Upload" id="btnUpload">
-	</form>
+	{% block content %}{% endblock %}
 </body>
+</html>

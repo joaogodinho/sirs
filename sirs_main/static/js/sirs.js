@@ -20,7 +20,7 @@
 
     // Converts the given bytes to base64
     var encode = function(bytes) {
-        return forge.util.encode64(bytes);ww
+        return forge.util.encode64(bytes);
     }
 
     // Converths the given base64 string into bytes

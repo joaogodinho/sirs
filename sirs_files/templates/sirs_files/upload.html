@@ -1,0 +1,10 @@
+{% extends "sirs_main/base.html" %}
+{% block title %}Upload File{% endblock %}
+{% block content %}
+<form method="post" id="frmUpload">
+	{% csrf_token %}
+	{{ form.as_p }}
+	<input type="button" id="btnCipher" value="Cipher">
+	<input type="submit" value="Upload" id="btnUpload">
+</form>
+{% endblock %}

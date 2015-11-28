@@ -1,36 +1,25 @@
-from django.forms import ModelForm, Textarea, TextInput, FileField
-from .models import SecretFile
+from django.forms import ModelForm, EmailField
+from .models import CustomUser
+from django.contrib.auth.forms import UserCreationForm as DjgoUserCreationForm
+from django.contrib.auth.models import User
 
 
-class FileUpload(ModelForm):
-    """FileUpload form represents the form to upload a file
-    Uses the fields on the SecretFile model and adds a filefield,
-    which should NOT be upload. Objetive is to cipher on the client
-    side and just upload the file name, IV, key and ciphertext
-    """
-    file = FileField(label='File to cipher', required=False)
+class UserCreationForm(DjgoUserCreationForm):
+    email = EmailField(required=True)
 
     class Meta:
-        model = SecretFile
-        fields = ['name', 'iv', 'key', 'ct']
-        widgets = {
-            'name': TextInput(attrs={'readonly': 'readonly'}),
-            'iv': TextInput(attrs={'readonly': 'readonly', 'size': 50}),
-            'key': TextInput(attrs={'readonly': 'readonly', 'size': 50}),
-            'ct': Textarea(attrs={'readonly': 'readonly'})
-        }
+        model = User
+        fields = ['username', 'email', 'password1', 'password2']
+
+    def save(self, commit=True):
+        user = super(UserCreationForm, self).save(commit=False)
+        user.email = self.cleaned_data['email']
+        if commit:
+            user.save()
+        return user
 
 
-class FileDownload(ModelForm):
-    """FileDownload forms represents the form to download a file
-    Maps the fields on the SecretFile model to the form.
-    """
+class UserCustomCreationForm(ModelForm):
     class Meta:
-        model = SecretFile
-        fields = ['name', 'iv', 'key', 'ct']
-        widgets = {
-            'name': TextInput(attrs={'readonly': 'readonly'}),
-            'iv': TextInput(attrs={'readonly': 'readonly', 'size': 50}),
-            'key': TextInput(attrs={'readonly': 'readonly', 'size': 50}),
-            'ct': Textarea(attrs={'readonly': 'readonly'})
-        }
+        model = CustomUser
+        fields = ['publicKey']
