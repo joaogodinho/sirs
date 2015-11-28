@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from .forms import UserCreationForm, UserCustomCreationForm
-from django.contrib.auth import login as djangoLogin
+from django.contrib.auth import login as djangoLogin, logout as djangoLogout
 from django.db import transaction
 from django.contrib.auth.forms import AuthenticationForm
 
@@ -45,3 +45,11 @@ def login(request):
             return render(request, 'sirs_users/login.html', {'login_form': form})
     else:
         return render(request, 'sirs_users/login.html', {'login_form': AuthenticationForm()})
+
+
+def logout(request):
+    """
+    Logs out a user and redirects him to the login page
+    """
+    djangoLogout(request)
+    return redirect('sirs_users:login')
