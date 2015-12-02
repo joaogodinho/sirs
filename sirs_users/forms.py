@@ -1,4 +1,4 @@
-from django.forms import ModelForm, EmailField, HiddenInput
+﻿from django.forms import ModelForm, EmailField, HiddenInput
 from .models import CustomUser
 from django.contrib.auth.forms import UserCreationForm as DjgoUserCreationForm
 from django.contrib.auth.models import User

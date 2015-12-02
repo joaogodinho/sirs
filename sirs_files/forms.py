@@ -1,4 +1,4 @@
-from django.forms import ModelForm, Textarea, TextInput, FileField, CharField, HiddenInput
+﻿from django.forms import ModelForm, Textarea, TextInput, FileField, CharField, HiddenInput
 from .models import SecretFile
 
 
@@ -34,6 +34,21 @@ class FileDownload(ModelForm):
         fields = ['name', 'iv', 'key', 'ct']
         widgets = {
             'name': TextInput(attrs={'readonly': 'readonly'}),
+            'iv': TextInput(attrs={'readonly': 'readonly', 'size': 50}),
+            'key': TextInput(attrs={'readonly': 'readonly', 'size': 50}),
+            'ct': Textarea(attrs={'readonly': 'readonly'})
+        }
+
+
+class FileUpdate(ModelForm):
+    """FileUpdate form represents the form to update a file
+    Maps the fields on the secretFile model to the form and allows updating the content and title
+    """
+    class Meta:
+        model = SecretFile
+        fields = ['name','iv','key','ct']
+        widgets = {
+            'name': TextInput(attrs={'size': 256}),
             'iv': TextInput(attrs={'readonly': 'readonly', 'size': 50}),
             'key': TextInput(attrs={'readonly': 'readonly', 'size': 50}),
             'ct': Textarea(attrs={'readonly': 'readonly'})

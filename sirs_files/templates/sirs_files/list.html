@@ -1,0 +1,16 @@
+﻿{% extends "sirs_main/base.html" %}
+{% block title %}My files{% endblock %}
+{% block content %}
+{% if file_list %}
+<ul>
+    {% for file in file_list %}
+        <li><a href="{{webpath}}files/details/{{file.iddrive}}"> {{file.name}} - {{file.lastmodified}}</a></li>
+    {% endfor %}
+</ul>
+{% endif %}
+<br />
+<a href="{{webpath}}files/upload/"> Upload a{%if file_list %}nother{%endif%} file </a>
+<br />
+<a href="{{webpath}}logout/"> Logout </a>
+<br />
+{% endblock %}

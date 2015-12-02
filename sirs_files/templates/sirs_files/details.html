@@ -1,0 +1,7 @@
+﻿{% extends "sirs_main/base.html" %}
+{% block title %}{{file.name}}{% endblock %}
+{% block content %}
+    <a href="{{webpath}}download/{{file.iddrive}}">download file</a>
+    <a href="{{webpath}}update/{{file.iddrive}}">update file</a>
+    <a href="{{webpath}}delete/{{file.iddrive}}">delete file</a>
+{% endblock %}

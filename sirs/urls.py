@@ -1,4 +1,4 @@
-"""sirs URL Configuration
+﻿"""sirs URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/1.8/topics/http/urls/
@@ -15,10 +15,13 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
+from sirs_auth import views
+import sirs_main
 
 urlpatterns = [
+    url(r'^$', include('sirs_main.urls', namespace = 'sirs_main')),
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^$', include('sirs_main.urls', namespace='sirs_main')),
+    url(r'^auth/', include('sirs_auth.urls', namespace='sirs_auth')),
     url(r'^users/', include('sirs_users.urls', namespace='sirs_users')),
     url(r'^files/', include('sirs_files.urls', namespace='sirs_files')),
 ]

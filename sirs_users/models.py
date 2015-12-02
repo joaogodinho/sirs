@@ -1,6 +1,6 @@
-from django.db import models
+﻿from django.db import models
+from django.contrib import admin
 from django.contrib.auth.models import User
-
 
 class CustomUser(models.Model):
     """CustomUser class represents an app user.
@@ -9,6 +9,7 @@ class CustomUser(models.Model):
     # Link to Django User model
     user = models.OneToOneField(User)
 
+    
     # User public key
     publicKey = models.TextField()
 
@@ -16,3 +17,4 @@ class CustomUser(models.Model):
     # the username
     def __unicode__(self):
         return self.user.username
+
