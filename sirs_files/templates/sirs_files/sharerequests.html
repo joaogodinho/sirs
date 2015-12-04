@@ -1,0 +1,11 @@
+﻿{% extends "sirs_main/base.html" %}
+{% block title %}My files{% endblock %}
+{% block content %}
+{% if file_list %}
+<ul>
+    {% for file in file_list %}
+        <li>{{file.name}} - shared by : {{file.creator.user.username}} <a href="{{sharepath}}requests/accept/{{file.id}}">Accept</a> <a href="{{sharepath}}requests/reject/{{file.id}}">Reject</a> </li>
+    {% endfor %}
+</ul>
+{% endif %}
+{% endblock %}

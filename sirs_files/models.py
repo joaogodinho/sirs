@@ -1,6 +1,9 @@
 ﻿from django.db import models
 from django.db.models.options import Options
 
+
+
+
 class SecretFile(models.Model):
     """SecretFile class represents a ciphered file.
     Contains the file key, ciphered file and its owner.
@@ -35,6 +38,29 @@ class SecretFile(models.Model):
     class Meta:
         Options.unique_together =  ('id_drive','owner')
 
+    def __unicode__(self):
+        return self.name + " (" + str(self.owner) + ")"
+
+class SharedSecretFile(models.Model):
+    """ model to share files between users"""
+
+    id = models.AutoField(primary_key=True)
+    
+    name = models.CharField(max_length=256)
+
+    iv = models.CharField(max_length=30)
+
+    key = models.CharField(max_length=350)
+
+    ct = models.TextField()
+
+    creator = models.ForeignKey('sirs_users.CustomUser', related_name = 'publisher')
+    
+    destiny_user = models.ForeignKey('sirs_users.CustomUser', related_name = 'consumer')
+
+
+    class Meta:
+        Options.unique_together = ('id','creator')
 
     def __unicode__(self):
         return self.name + " (" + str(self.owner) + ")"

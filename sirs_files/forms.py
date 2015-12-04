@@ -1,5 +1,6 @@
-﻿from django.forms import ModelForm, Textarea, TextInput, FileField, CharField, HiddenInput
-from .models import SecretFile
+﻿from django.forms import ModelForm, Textarea, TextInput, FileField, CharField, HiddenInput, Form, ChoiceField
+from .models import SecretFile, SharedSecretFile
+from django import forms
 
 
 class FileUpload(ModelForm):
@@ -39,17 +40,31 @@ class FileDownload(ModelForm):
             'ct': Textarea(attrs={'readonly': 'readonly'})
         }
 
-
-class FileUpdate(ModelForm):
-    """FileUpdate form represents the form to update a file
-    Maps the fields on the secretFile model to the form and allows updating the content and title
+class FileShare(ModelForm):
+    """ FileShare form represents the form to share a file with another user
+    Maps the fields on the SharedSecretFile model to the form (the ones needed at least).
     """
+    
+    pubKey = CharField(widget=HiddenInput())
+    privKey = FileField(label='Private Key (PEM)', required = False)
+    username = CharField(widget=HiddenInput(), required = False)
     class Meta:
-        model = SecretFile
+        model = SharedSecretFile
+        
         fields = ['name','iv','key','ct']
         widgets = {
-            'name': TextInput(attrs={'size': 256}),
+            'name': TextInput(attrs={'readonly': 'readonly'}),
             'iv': TextInput(attrs={'readonly': 'readonly', 'size': 50}),
-            'key': TextInput(attrs={'readonly': 'readonly', 'size': 50}),
-            'ct': Textarea(attrs={'readonly': 'readonly'})
+             'key': TextInput(attrs={'readonly': 'readonly', 'size': 50}),
+            'ct': Textarea(attrs={'readonly': 'readonly'}),
         }
+
+class FileAndUserSelection(Form):
+
+    def __init__(self,options, *args, **kwargs):
+        super(FileAndUserSelection, self).__init__(*args, **kwargs)
+        self.fields['choices'] = forms.ChoiceField(choices = options)
+        self.fields['username'] = CharField(max_length=30,min_length = 1)
+        
+    
+        

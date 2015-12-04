@@ -5,6 +5,8 @@ from django.db import transaction
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import logout as djangoLogout
+from sirs.settings import WEBPATH
+
 
 def register(request):
     """
@@ -46,7 +48,7 @@ def login(request):
         else:
             return render(request, 'sirs_users/login.html', {'login_form': form})
     else:
-        return render(request, 'sirs_users/login.html', {'login_form': AuthenticationForm()})
+        return render(request, 'sirs_users/login.html', {'login_form': AuthenticationForm() , 'webpath':WEBPATH})
 
 
 

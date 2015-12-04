@@ -27,7 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
+WEBPATH = "http://sirs.duckdns.org:8000/"
 # Application definition
 
 INSTALLED_APPS = (

@@ -1,0 +1,10 @@
+{% extends "sirs_main/base.html" %}
+{% block title %}Share File{% endblock %}
+{% block content %}
+<form id="frmShareFile" method="post" action="{{sharepath}}upload/sharingComplete">
+    {% csrf_token %}
+	{{ form.as_p }}
+	<input type="button" value="Submit" id="btnShare"/>
+    <input type="submit" value="Confirm" id="btnConfirmShare"/>
+</form>
+{% endblock %}

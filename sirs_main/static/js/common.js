@@ -38,6 +38,7 @@ $(function() {
     });
 
     $("#btnRegister").prop('disabled', true);
+    $("#btnConfirmShare").prop('disabled', true);
 
     $("#btnGenerate").click(function(event) {
         var text = "Generating asymmetric keys...";
@@ -54,4 +55,19 @@ $(function() {
             $("#btnRegister").prop('disabled', false);
         });
     });
+
+    $("#btnShare").click(function (event) {
+        var keyCT = $("#id_key").val();
+        var privatePem = $("#id_privKey")[0].files[0];
+        var publicKey = $("#id_pubKey").val();
+        sirs.readFile(privatePem, function (_, content) {
+            var decipheredKey = sirs.decipherKey(content, keyCT);
+            var cipheredKeyWithPK = sirs.cipherKey(publicKey, decipheredKey)
+            $("#id_key").val(cipheredKeyWithPK)
+        });
+        $("#btnShare").prop('disabled', true);
+        $("#btnConfirmShare").prop('disabled',false);
+    });
+
+
 });
