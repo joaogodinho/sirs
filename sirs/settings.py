@@ -41,6 +41,7 @@ INSTALLED_APPS = (
     'sirs_users',
     'sirs_files',
     'sirs_auth',
+    'sslserver',
 )
 
 MIDDLEWARE_CLASSES = (
